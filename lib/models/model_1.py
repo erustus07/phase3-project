@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date
+# lib/models/model_1.py
+
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
@@ -29,6 +31,7 @@ class Checkout(Base):
     book_id = Column(Integer, ForeignKey('books.id'), primary_key=True)
     user_id = Column(Integer, primary_key=True)
     due_date = Column(Date, nullable=False)
+    book = relationship('Book')
 
     def __repr__(self):
         return f"<Checkout(book_id={self.book_id}, user_id={self.user_id}, due_date={self.due_date})>"

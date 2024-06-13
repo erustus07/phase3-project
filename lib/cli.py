@@ -1,3 +1,5 @@
+# lib/cli.py
+
 from lib.database import initialize_database, session
 from lib.models.model_1 import Author, Book, Checkout
 from lib.helpers import validate_date
@@ -7,6 +9,29 @@ def add_author(name):
     session.add(author)
     session.commit()
     print(f"Author '{name}' added successfully.")
+
+def update_author(author_id, new_name):
+    author = session.query(Author).filter(Author.id == author_id).first()
+    if author:
+        author.name = new_name
+        session.commit()
+        print(f"Author ID {author_id} updated successfully.")
+    else:
+        print(f"Author ID {author_id} not found.")
+
+def delete_author(author_id):
+    author = session.query(Author).filter(Author.id == author_id).first()
+    if author:
+        session.delete(author)
+        session.commit()
+        print(f"Author ID {author_id} deleted successfully.")
+    else:
+        print(f"Author ID {author_id} not found.")
+
+def list_authors():
+    authors = session.query(Author).all()
+    for author in authors:
+        print(f"ID: {author.id}, Name: {author.name}")
 
 def add_book(title, author_id):
     book = Book(title=title, author_id=author_id)
@@ -49,40 +74,50 @@ def main():
     while True:
         print("\nLibrary Management System")
         print("1. Add Author")
-        print("2. Add Book")
-        print("3. List Books")
-        print("4. Update Book")
-        print("5. Delete Book")
-        print("6. Checkout Book")
-        print("7. Exit")
+        print("2. Update Author")
+        print("3. Delete Author")
+        print("4. List Authors")
+        print("5. Add Book")
+        print("6. Update Book")
+        print("7. Delete Book")
+        print("8. List Books")
+        print("9. Checkout Book")
+        print("10. Exit")
         choice = input("Enter your choice: ")
         if choice == '1':
             name = input("Enter author name: ")
             add_author(name)
         elif choice == '2':
+            author_id = input("Enter author ID to update: ")
+            new_name = input("Enter new author name: ")
+            update_author(author_id, new_name)
+        elif choice == '3':
+            author_id = input("Enter author ID to delete: ")
+            delete_author(author_id)
+        elif choice == '4':
+            list_authors()
+        elif choice == '5':
             title = input("Enter book title: ")
             author_id = input("Enter author ID: ")
             add_book(title, author_id)
-        elif choice == '3':
-            list_books()
-        elif choice == '4':
+        elif choice == '6':
             book_id = input("Enter book ID to update: ")
             new_title = input("Enter new book title: ")
             update_book(book_id, new_title)
-        elif choice == '5':
+        elif choice == '7':
             book_id = input("Enter book ID to delete: ")
             delete_book(book_id)
-        elif choice == '6':
+        elif choice == '8':
+            list_books()
+        elif choice == '9':
             book_id = input("Enter book ID: ")
             user_id = input("Enter user ID: ")
             due_date = input("Enter due date (YYYY-MM-DD): ")
             checkout_book(book_id, user_id, due_date)
-        elif choice == '7':
+        elif choice == '10':
             break
         else:
             print("Invalid choice, please try again.")
 
 if __name__ == "__main__":
     main()
-
-

@@ -1,8 +1,10 @@
+# lib/database.py
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from lib.models.model_1 import Base
 
-DATABASE_URL = "sqlite:///library.db"
+DATABASE_URL = "sqlite:///lib/database.db"
 
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)

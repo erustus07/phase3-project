@@ -1,5 +1,5 @@
-from lib.database import initialize_database, session
-from lib.models.model_1 import Author, Book, Checkout
+from lib.database import initialize_database
+from lib.models.model_1 import session, Author, Book, Checkout
 
 def print_all_authors():
     authors = session.query(Author).all()
